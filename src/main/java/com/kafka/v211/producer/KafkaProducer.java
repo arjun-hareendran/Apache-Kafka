@@ -9,7 +9,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 public class KafkaProducer {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 
 		Properties prop = new Properties();
@@ -24,10 +24,18 @@ public class KafkaProducer {
 		prop.setProperty("linger.ms ", "1");
 
 		Producer<String, String> producer = new org.apache.kafka.clients.producer.KafkaProducer<String, String>(prop);
-		ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("testtopic", "3",
-				"Test Message from java program " + new Timestamp(System.currentTimeMillis()));
-		producer.send(producerRecord);
-	
+		ProducerRecord<String, String> producerRecord ;
+		
+		int counter=1;
+		while(counter <100){
+			producerRecord = new ProducerRecord<String, String>("secondtopic", "1",
+					"Test Message from java program , The current system timestamp is ==> " + new Timestamp(System.currentTimeMillis()));		
+			
+			producer.send(producerRecord);
+			counter++;
+			Thread.sleep(100);
+		}
+		
 		// linger.ms will overrider
 		// producer.flush();
 
